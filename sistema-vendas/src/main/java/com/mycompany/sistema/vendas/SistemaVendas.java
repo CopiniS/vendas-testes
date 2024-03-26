@@ -105,7 +105,7 @@ public class SistemaVendas {
                             String parcelas = JOptionPane.showInputDialog("Digite a quantidade de parcelas desejadas para o valor: " + pedido.getValorTotal());
                             if(bd.isInteger(parcelas)){
                                 if(pedido.verificaParcelasCredito(Double.parseDouble(parcelas))){
-                                    JOptionPane.showMessageDialog(null, "Forma de pagamento escolhida: "+ formaPagamento + "\nQuantidade de parcelas: "+parcelas);
+                                    JOptionPane.showMessageDialog(null, bd.mostraPedido(pedido)+ "\nForma de pagamento escolhida: "+ formaPagamento + "\nQuantidade de parcelas: "+parcelas);
                                 }
                                 else{
                                     JOptionPane.showMessageDialog(null, "Quantidade de parcelas invalida.\nAs parcelas não podem ser inferiores nem iguais a R$ 20,00");
@@ -116,8 +116,10 @@ public class SistemaVendas {
                             }
                         }
                         else{
-                            JOptionPane.showMessageDialog(null, "Foma de pagamento escolhida: " + formaPagamento);
+                            JOptionPane.showMessageDialog(null, bd.mostraPedido(pedido)+ "\nFoma de pagamento escolhida: " + formaPagamento);
                         }
+                        
+                        pedido = new Pedido();
                         
                     } 
                     else if(pedido.verificaPedidoVazio()) {
