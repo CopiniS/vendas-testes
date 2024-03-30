@@ -2,6 +2,7 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Pedido {
     private ArrayList<Item> itensvenda;
@@ -14,10 +15,6 @@ public class Pedido {
 
     public ArrayList<Item> getItensvenda() {
         return itensvenda;
-    }
-
-    public void setItensvenda(ArrayList<Item> itensvenda) {
-        this.itensvenda = itensvenda;
     }
 
     public String getFormaPagamento() {
@@ -84,6 +81,46 @@ public class Pedido {
     
     public boolean verificaPedidoVazio(){
         return this.itensvenda.isEmpty();
+    }
+    
+    public String mostraPedido(){
+        String textoProdutos = "\nLista de produtos adicionados: \n\n";
+        if(!this.itensvenda.isEmpty()){
+            for(Item i : this.itensvenda){
+               textoProdutos = textoProdutos + "ID: " + i.getProduto().getId() + "  -  Produto: " + i.getProduto().getNome() + 
+                       "  -  quantidade: " + i.getQuantidade() + "  -  valor: " +i.getProduto().getValor() * i.getQuantidade() + "\n";
+            }
+        }
+        calculaValorTotal();
+        textoProdutos = textoProdutos + "Valor Total: " + this.valorTotal;
+        return textoProdutos;
+    }
+    
+    public Produto retornaProdutoPeloIdPedidos(int idProduto){
+        boolean temProduto = false;
+        Produto produto = new Produto("", 0);
+        for(Item i : this.itensvenda){
+            if(i.getProduto().getId() == idProduto){
+                temProduto = true;
+                produto = i.getProduto();
+            }
+        }
+        if(temProduto){
+            return produto;
+        }
+        else{
+            return null;
+        }
+    }
+    
+    public boolean verificaProdutoDentroPedido(Produto produto){
+        boolean resultado =false;
+        for(Item i : this.itensvenda){
+            if(i.getProduto().equals(produto)){
+                resultado = true;
+            }
+        }
+        return resultado;
     }
     
 }

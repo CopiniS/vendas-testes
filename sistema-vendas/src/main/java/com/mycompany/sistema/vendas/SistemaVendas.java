@@ -3,7 +3,7 @@ package com.mycompany.sistema.vendas;
 
 import java.util.List;
 import javax.swing.JOptionPane;
-import models.BancoProdutos;
+import models.Mock;
 import models.Pedido;
 import models.Produto;
 
@@ -18,7 +18,7 @@ public class SistemaVendas {
                 + "end - para encerrar o programa \n");
         
         Pedido pedido = new Pedido();
-        BancoProdutos bd = new BancoProdutos();
+        Mock bd = new Mock();
         List listaProdutos = bd.criaProdutos();
    
         while(!inicialInfo.equals("end")){
@@ -34,11 +34,11 @@ public class SistemaVendas {
                         Produto p = bd.retornaProdutoPeloId(Integer.parseInt(idSelecionado));
                         if(p != null){
                             String quantidade = JOptionPane.showInputDialog("Digite a quantidade que deseja do produto " + p.getNome());
-                            if(bd.isInteger(quantidade) && !bd.verificaProdutosPedido(p, pedido.getItensvenda())){
+                            if(bd.isInteger(quantidade) && !pedido.verificaProdutoDentroPedido(p)){
                                 pedido.adicionaProduto(p, Integer.parseInt(quantidade));
                                 JOptionPane.showMessageDialog(null, "Produto adicionado com sucesso");
                             }
-                            else if(bd.verificaProdutosPedido(p, pedido.getItensvenda())){
+                            else if(pedido.verificaProdutoDentroPedido(p)){
                                 pedido.alteraProduto(Integer.parseInt(quantidade), p.getId());
                                 JOptionPane.showMessageDialog(null, "Produto adicionado com sucesso");
                             }
@@ -56,9 +56,9 @@ public class SistemaVendas {
                     break;
                     
                 case "remove": 
-                    idSelecionado = JOptionPane.showInputDialog("DIGITE O ID DO PRODUTO QUE DESEJA REMOVER DO PEDIDO" + bd.mostraPedido(pedido));
+                    idSelecionado = JOptionPane.showInputDialog("DIGITE O ID DO PRODUTO QUE DESEJA REMOVER DO PEDIDO" + pedido.mostraPedido());
                     if(bd.isInteger(idSelecionado)){
-                        Produto p = bd.retornaProdutoPeloIdPedidos(Integer.parseInt(idSelecionado), pedido.getItensvenda());
+                        Produto p = pedido.retornaProdutoPeloIdPedidos(Integer.parseInt(idSelecionado));
                         if(p != null){
                             pedido.removeProduto(p.getId());
                             JOptionPane.showMessageDialog(null, "Produto removido com sucesso");
@@ -73,9 +73,9 @@ public class SistemaVendas {
                     break;
                     
                 case "update":
-                    idSelecionado = JOptionPane.showInputDialog("DIGITE O ID DO PRODUTO QUE DESEJA ALTERAR DO PEDIDO" + bd.mostraPedido(pedido));
+                    idSelecionado = JOptionPane.showInputDialog("DIGITE O ID DO PRODUTO QUE DESEJA ALTERAR DO PEDIDO" + pedido.mostraPedido());
                     if(bd.isInteger(idSelecionado)){
-                        Produto p = bd.retornaProdutoPeloIdPedidos(Integer.parseInt(idSelecionado), pedido.getItensvenda());
+                        Produto p = pedido.retornaProdutoPeloIdPedidos(Integer.parseInt(idSelecionado));
                         if(p != null){
                             String quantidade = JOptionPane.showInputDialog("Digite a quantidade desejada do produto " + p.getNome());
                             pedido.alteraProduto(Integer.parseInt(quantidade), p.getId());
@@ -94,7 +94,7 @@ public class SistemaVendas {
                     String[] opcoesPagamento = { "Dinheiro", "Pix", "Cartão de Crédito", "Cartão de Débito" };
 
                     // Exibir caixa de diálogo de seleção de pagamento
-                    int opcaoSelecionada = JOptionPane.showOptionDialog(null, bd.mostraPedido(pedido) + "\n\nSELECIONE A FORMA DE PAGAMENTO:", "Pagamento",
+                    int opcaoSelecionada = JOptionPane.showOptionDialog(null, pedido.mostraPedido() + "\n\nSELECIONE A FORMA DE PAGAMENTO:", "Pagamento",
                             JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, opcoesPagamento,
                             opcoesPagamento[0]);
 
@@ -105,7 +105,7 @@ public class SistemaVendas {
                             String parcelas = JOptionPane.showInputDialog("Digite a quantidade de parcelas desejadas para o valor: " + pedido.getValorTotal());
                             if(bd.isInteger(parcelas)){
                                 if(pedido.verificaParcelasCredito(Double.parseDouble(parcelas))){
-                                    JOptionPane.showMessageDialog(null, bd.mostraPedido(pedido)+ "\nForma de pagamento escolhida: "+ formaPagamento + "\nQuantidade de parcelas: "+parcelas);
+                                    JOptionPane.showMessageDialog(null, pedido.mostraPedido()+ "\n\nForma de pagamento escolhida: "+ formaPagamento + "\nQuantidade de parcelas: "+parcelas);
                                 }
                                 else{
                                     JOptionPane.showMessageDialog(null, "Quantidade de parcelas invalida.\nAs parcelas não podem ser inferiores nem iguais a R$ 20,00");
@@ -116,7 +116,7 @@ public class SistemaVendas {
                             }
                         }
                         else{
-                            JOptionPane.showMessageDialog(null, bd.mostraPedido(pedido)+ "\nFoma de pagamento escolhida: " + formaPagamento);
+                            JOptionPane.showMessageDialog(null, pedido.mostraPedido()+ "\n\nFoma de pagamento escolhida: " + formaPagamento);
                         }
                         
                         pedido = new Pedido();

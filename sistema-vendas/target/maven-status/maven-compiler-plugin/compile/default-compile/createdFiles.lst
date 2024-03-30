@@ -1,5 +1,5 @@
 models\Pedido.class
-models\BancoProdutos.class
 models\Item.class
+models\Mock.class
 models\Produto.class
 com\mycompany\sistema\vendas\SistemaVendas.class

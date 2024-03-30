@@ -1,0 +1,6 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+sistema-vendas,models,Produto,0,30,0,0,0,13,0,7,0,7
+sistema-vendas,models,Pedido,7,237,1,25,3,59,3,26,2,14
+sistema-vendas,models,Item,0,23,0,0,0,10,0,5,0,5
+sistema-vendas,models,Mock,0,179,0,8,0,40,0,10,0,6
+sistema-vendas,com.mycompany.sistema.vendas,SistemaVendas,282,0,40,0,68,0,24,0,2,0

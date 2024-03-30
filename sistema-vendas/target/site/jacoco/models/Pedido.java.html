@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Pedido.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sistema-vendas</a> &gt; <a href="index.source.html" class="el_package">models</a> &gt; <span class="el_source">Pedido.java</span></div><h1>Pedido.java</h1><pre class="source lang-java linenums">
+package models;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Pedido {
+    private ArrayList&lt;Item&gt; itensvenda;
+    private Double valorTotal;
+    private String formaPagamento;
+
+<span class="fc" id="L12">    public Pedido() {</span>
+<span class="fc" id="L13">        this.itensvenda = new ArrayList();</span>
+<span class="fc" id="L14">    }</span>
+
+    public ArrayList&lt;Item&gt; getItensvenda() {
+<span class="fc" id="L17">        return itensvenda;</span>
+    }
+
+    public String getFormaPagamento() {
+<span class="nc" id="L21">        return formaPagamento;</span>
+    }
+
+    public void setFormaPagamento(String formaPagamento) {
+<span class="nc" id="L25">        this.formaPagamento = formaPagamento;</span>
+<span class="nc" id="L26">    }</span>
+
+    public Double getValorTotal() {
+<span class="fc" id="L29">        return valorTotal;</span>
+    }
+
+    public void setValorTotal(Double valorTotal) {
+<span class="fc" id="L33">        this.valorTotal = valorTotal;</span>
+<span class="fc" id="L34">    }</span>
+    
+    
+    public boolean verificaProdutos(){
+<span class="fc" id="L38">        return itensvenda.isEmpty();</span>
+    }
+    
+    public void adicionaProduto(Produto produto, int quantidade){
+<span class="fc" id="L42">        Item item = new Item(produto, quantidade);</span>
+<span class="fc" id="L43">        this.itensvenda.add(item);</span>
+<span class="fc" id="L44">    }</span>
+    
+    public void removeProduto(int id){
+<span class="fc" id="L47">        Item excluido = null;</span>
+<span class="fc bfc" id="L48" title="All 2 branches covered.">        for(Item item : this.itensvenda){</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">            if(item.getProduto().getId() == id){</span>
+<span class="fc" id="L50">                excluido = item;</span>
+            }
+<span class="fc" id="L52">        }</span>
+<span class="fc" id="L53">        this.itensvenda.remove(excluido);</span>
+<span class="fc" id="L54">    }</span>
+    
+    public void alteraProduto(int quantidade, int id){
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        for(Item item : this.itensvenda){</span>
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">            if(item.getProduto().getId() == id){</span>
+<span class="fc" id="L59">                item.setQuantidade(quantidade);</span>
+            }
+<span class="fc" id="L61">        }        </span>
+<span class="fc" id="L62">    }</span>
+    
+    public boolean verificaParcelasCredito(double quantidadeParcelas){
+<span class="fc" id="L65">        boolean maisDe20 = true;</span>
+<span class="fc" id="L66">        double valorParcelas = this.valorTotal / quantidadeParcelas;</span>
+        
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        if(valorParcelas &lt;= 20){</span>
+<span class="fc" id="L69">            maisDe20 = false;</span>
+        }
+        
+<span class="fc" id="L72">        return maisDe20;</span>
+    }
+    
+    public void calculaValorTotal(){
+<span class="fc" id="L76">        this.valorTotal = 0.0;</span>
+<span class="fc bfc" id="L77" title="All 2 branches covered.">        for(Item item : this.itensvenda){</span>
+<span class="fc" id="L78">            this.valorTotal = this.valorTotal + (item.getProduto().getValor() * item.getQuantidade());</span>
+<span class="fc" id="L79">        }</span>
+<span class="fc" id="L80">    }</span>
+    
+    public boolean verificaPedidoVazio(){
+<span class="fc" id="L83">        return this.itensvenda.isEmpty();</span>
+    }
+    
+    public String mostraPedido(){
+<span class="fc" id="L87">        String textoProdutos = &quot;\nLista de produtos adicionados: \n\n&quot;;</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">        if(!this.itensvenda.isEmpty()){</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">            for(Item i : this.itensvenda){</span>
+<span class="fc" id="L90">               textoProdutos = textoProdutos + &quot;ID: &quot; + i.getProduto().getId() + &quot;  -  Produto: &quot; + i.getProduto().getNome() + </span>
+<span class="fc" id="L91">                       &quot;  -  quantidade: &quot; + i.getQuantidade() + &quot;  -  valor: &quot; +i.getProduto().getValor() * i.getQuantidade() + &quot;\n&quot;;</span>
+<span class="fc" id="L92">            }</span>
+        }
+<span class="fc" id="L94">        calculaValorTotal();</span>
+<span class="fc" id="L95">        textoProdutos = textoProdutos + &quot;Valor Total: &quot; + this.valorTotal;</span>
+<span class="fc" id="L96">        return textoProdutos;</span>
+    }
+    
+    public Produto retornaProdutoPeloIdPedidos(int idProduto){
+<span class="fc" id="L100">        boolean temProduto = false;</span>
+<span class="fc" id="L101">        Produto produto = new Produto(&quot;&quot;, 0);</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">        for(Item i : this.itensvenda){</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">            if(i.getProduto().getId() == idProduto){</span>
+<span class="fc" id="L104">                temProduto = true;</span>
+<span class="fc" id="L105">                produto = i.getProduto();</span>
+            }
+<span class="fc" id="L107">        }</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">        if(temProduto){</span>
+<span class="fc" id="L109">            return produto;</span>
+        }
+        else{
+<span class="fc" id="L112">            return null;</span>
+        }
+    }
+    
+    public boolean verificaProdutoDentroPedido(Produto produto){
+<span class="fc" id="L117">        boolean resultado =false;</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">        for(Item i : this.itensvenda){</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">            if(i.getProduto().equals(produto)){</span>
+<span class="fc" id="L120">                resultado = true;</span>
+            }
+<span class="fc" id="L122">        }</span>
+<span class="fc" id="L123">        return resultado;</span>
+    }
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

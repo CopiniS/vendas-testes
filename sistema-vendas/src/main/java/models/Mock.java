@@ -5,8 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-public class BancoProdutos {
-     List<Produto> lista = new ArrayList<Produto>();
+public class Mock {
+    List<Produto> lista = new ArrayList<Produto>();
+     
     public List criaProdutos(){
        
         
@@ -48,8 +49,10 @@ public class BancoProdutos {
     public String mostraProdutos(){
         String textoProdutos = "Lista de produtos: \n\n";
         
-        for(Produto p : this.lista){
-           textoProdutos = textoProdutos + "ID: " + p.getId() + "  -  Produto: " + p.getNome() + "  -  valor: " + p.getValor() + "\n";
+        if(!this.lista.isEmpty()){
+            for(Produto p : this.lista){
+               textoProdutos = textoProdutos + "ID: " + p.getId() + "  -  Produto: " + p.getNome() + "  -  valor: " + p.getValor() + "\n";
+            }
         }
         return textoProdutos;
     }
@@ -61,40 +64,13 @@ public class BancoProdutos {
             }
         }
         return null;
-    }
+    }  
     
     public static boolean isInteger(String str) {
         return str.matches("\\d+");
     }
-    
-    public String mostraPedido(Pedido pedido){
-        String textoProdutos = "\nLista de produtos adicionados: \n\n";
-        
-        for(Item i : pedido.getItensvenda()){
-           textoProdutos = textoProdutos + "ID: " + i.getProduto().getId() + "  -  Produto: " + i.getProduto().getNome() + 
-                   "  -  quantidade: " + i.getQuantidade() + "  -  valor: " +i.getProduto().getValor() * i.getQuantidade() + "\n";
-        }
-        pedido.calculaValorTotal();
-        textoProdutos = textoProdutos + "Valor Total: " + pedido.getValorTotal();
-        return textoProdutos;
-    }
-    
-    public Produto retornaProdutoPeloIdPedidos(int idProduto, List<Item> lista){
-        for(Item i : lista){
-            if(i.getProduto().getId() == idProduto){
-                return i.getProduto();
-            }
-        }
-        return null;
-    }
-    
-    public boolean verificaProdutosPedido(Produto produto, List<Item> lista){
-        boolean resultado =false;
-        for(Item i : lista){
-            if(i.getProduto().equals(produto)){
-                resultado = true;
-            }
-        }
-        return resultado;
+
+    public List<Produto> getLista() {
+        return lista;
     }
 }
